@@ -97,8 +97,10 @@ module StatefulEnum
           end
         end
         transitions.each_pair do |from, to|
+          raise TypeError, "`to` state should be given by `Symbol`, but `#{f.class}` was given" unless to.is_a? Symbol
           raise "Undefined state #{to}" unless @states.include? to
           Array(from).each do |f|
+            raise TypeError, "`from` state should be given by `Symbol`, but `#{f.class}` was given" unless f.is_a? Symbol
             raise "Undefined state #{f}" unless @states.include? f
             raise "Duplicate entry: Transition from #{f} to #{@transitions[f].first} has already been defined." if @transitions[f]
             @transitions[f] = [to, options[:if]]
